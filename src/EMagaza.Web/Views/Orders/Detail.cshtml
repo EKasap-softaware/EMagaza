@@ -1,0 +1,76 @@
+@model Order
+@{
+    ViewData["Title"] = "Sipariş " + Model.Number;
+    var placed = ViewBag.Placed == true;
+    var steps = new[] { (OrderStatus.Paid, "Ödendi"), (OrderStatus.Preparing, "Hazırlanıyor"), (OrderStatus.Shipped, "Kargoda"), (OrderStatus.Delivered, "Teslim edildi") };
+}
+<div class="wrap">
+    @if (placed)
+    {
+        <div class="success">
+            <div class="check-circle">✓</div>
+            <h1>Ödemen alındı, teşekkürler!</h1>
+            <p class="muted">Siparişin başarıyla oluşturuldu. Sipariş numaran:</p>
+            <div class="big-no">@Model.Number</div>
+            <div class="proof" id="notif-proof" data-order-id="@Model.Id">
+                <span class="dot"></span>
+                <div><div class="np-state">Bildirimin gönderiliyor…</div><div class="np-text">Sipariş olayı RabbitMQ kuyruğuna bırakıldı; Worker bildirimini hazırlıyor.</div></div>
+            </div>
+            <p style="margin-top:22px"><a class="btn" asp-controller="Notifications" asp-action="Index">Bildirimlerime git</a> <a class="btn btn-dark" asp-controller="Shop" asp-action="Index">Alışverişe devam et</a></p>
+        </div>
+    }
+    else
+    {
+        <div class="page-head"><div class="crumbs"><a asp-action="Index">Siparişlerim</a> / @Model.Number</div><h1>Sipariş @Model.Number</h1></div>
+    }
+
+    @if (Model.Status == OrderStatus.Cancelled)
+    {
+        <div class="alert alert-bad" style="margin-top:24px"><b>Bu sipariş iptal edildi.</b> @Fmt.Money(Model.Total) tutarındaki ödeme iade edildi, ürünler stoğa geri döndü.</div>
+    }
+    else
+    {
+        <div class="timeline">
+            @foreach (var (st, label) in steps)
+            {
+                <div class="tl @(Model.Status >= st ? "done" : "")"><i>@(Model.Status >= st ? "✓" : "")</i>@label</div>
+            }
+        </div>
+    }
+    @if (Model.TrackingNumber is not null) { <p class="muted" style="text-align:center">Kargo takip no: <b style="color:var(--ink)">@Model.TrackingNumber</b></p> }
+
+    <div class="detail-grid" style="margin-top:30px">
+        <div class="panel">
+            <h3>Ürünler</h3>
+            @foreach (var i in Model.Items)
+            {
+                <div class="cart-line" style="grid-template-columns:80px 1fr auto">
+                    <div class="cart-thumb" style="background:@Garments.Tint(i.ColorHex)">@Garments.Svg(i.Type, i.ColorHex)</div>
+                    <div><div class="pbrand">@i.Brand</div><h4>@i.ProductName</h4><div class="meta">@i.ColorName · Beden @i.Size · @i.Quantity adet</div></div>
+                    <div class="line-total">@Fmt.Money(i.LineTotal)</div>
+                </div>
+            }
+        </div>
+        <aside class="panel">
+            <h3>Özet</h3>
+            <dl class="kv">
+                <dt>Tarih</dt><dd>@Fmt.Date(Model.CreatedAt)</dd>
+                <dt>Durum</dt><dd><span class="status st-@Model.Status">@StatusText.Label(Model.Status)</span></dd>
+                <dt>Ödeme</dt><dd>@Model.PaymentBrand ···· @Model.PaymentLast4</dd>
+                <dt>Alıcı</dt><dd>@Model.CustomerName<br />@Model.Phone</dd>
+                <dt>Adres</dt><dd>@Model.Address, @Model.City</dd>
+            </dl>
+            <div class="sum-row" style="margin-top:14px"><span>Ara toplam</span><span>@Fmt.Money(Model.Subtotal)</span></div>
+            @if (Model.CouponCode is not null) { <div class="sum-row ok"><span>Kupon @Model.CouponCode</span><span>−@Fmt.Money(Model.DiscountAmount)</span></div> }
+            <div class="sum-row"><span>Kargo</span><span>@(Model.ShippingFee == 0 ? "Ücretsiz" : Fmt.Money(Model.ShippingFee))</span></div>
+            <div class="sum-row sum-total"><span>Toplam</span><span>@Fmt.Money(Model.Total)</span></div>
+            @if (Model.CanCancel)
+            {
+                <form asp-controller="Orders" asp-action="Cancel" asp-route-id="@Model.Id" method="post" style="margin-top:16px"
+                      onsubmit="return confirm('Siparişi iptal etmek istediğine emin misin? Ödemen iade edilecek.')">
+                    <button class="btn btn-block">Siparişi iptal et</button>
+                </form>
+            }
+        </aside>
+    </div>
+</div>

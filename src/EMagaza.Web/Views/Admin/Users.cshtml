@@ -1,0 +1,31 @@
+
+@model IReadOnlyList<User>
+@{ ViewData["Title"] = "Kullanıcılar"; var me = User.GetUserId(); }
+<div class="wrap">
+    <a class="back" asp-action="Index">← Panele dön</a>
+    <div class="page-head" style="padding-top:12px"><h1>Kullanıcılar &amp; roller</h1><p class="muted">MongoDB · users</p></div>
+    <div class="tbl"><table>
+        <tr><th>Ad</th><th>E-posta</th><th>Rol</th><th>Kayıt</th><th>Rolü değiştir</th></tr>
+        @foreach (var u in Model)
+        {
+            <tr>
+                <td>@u.DisplayName @if (u.Id == me) { <small class="muted">(sen)</small> }</td>
+                <td>@u.Email</td>
+                <td><span class="role @(u.Role == "Admin" ? "role-admin" : "")">@u.Role</span></td>
+                <td>@Fmt.ShortDate(u.CreatedAt)</td>
+                <td>
+                    @if (u.Id == me) { <span class="muted">değiştirilemez</span> }
+                    else
+                    {
+                        <form asp-action="ChangeRole" method="post" class="inline">
+                            <input type="hidden" name="userId" value="@u.Id" />
+                            <select name="role" class="select">@foreach (var r in Roles.All) { <option value="@r" selected="@(r == u.Role)">@r</option> }</select>
+                            <button class="btn btn-sm">Kaydet</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </table></div>
+    <p class="muted small" style="margin-top:14px">Not: rol cookie içinde taşınır; değişiklik kullanıcı bir sonraki girişinde etkili olur.</p>
+</div>

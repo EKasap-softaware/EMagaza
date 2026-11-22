@@ -1,0 +1,21 @@
+@model Product
+<a class="pcard" asp-controller="Shop" asp-action="Detail" asp-route-id="@Model.Id">
+    <div class="pcard-img" style="background:@Garments.Tint(Model.ColorHex)">
+        @Garments.Svg(Model.Type, Model.ColorHex)
+        <div class="tags">
+            @if (Model.TotalStock == 0) { <span class="tag tag-out">Tükendi</span> }
+            else
+            {
+                @if (Model.OnSale) { <span class="tag tag-sale">%@Model.DiscountPercent</span> }
+                @if (Model.IsNew) { <span class="tag tag-new">Yeni</span> }
+            }
+        </div>
+    </div>
+    <div class="pcard-body">
+        <div class="pbrand">@Model.Brand</div>
+        <div class="pname">@Model.Name</div>
+        <div><span class="price @(Model.OnSale ? "sale-price" : "")">@Fmt.Money(Model.Price)</span>@if (Model.OnSale) { <span class="old">@Fmt.Money(Model.OldPrice)</span> }</div>
+        @if (Model.ReviewCount > 0) { <div class="rating small">★ @Model.RatingAverage.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture)<small>(@Model.ReviewCount)</small></div> }
+        <div class="muted small"><span class="swatch" style="background:@Model.ColorHex"></span>@Model.ColorName</div>
+    </div>
+</a>

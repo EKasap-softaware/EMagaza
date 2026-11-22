@@ -1,0 +1,913 @@
+[
+  {
+    "Name": "Trençkot",
+    "Brand": "LUNE Atelier",
+    "Category": "Kadın",
+    "Type": "coat",
+    "ColorName": "Camel",
+    "ColorHex": "#b88a5a",
+    "Price": 3490,
+    "OldPrice": 0,
+    "IsNew": true,
+    "Popularity": 99,
+    "Description": "Kemerli, çift sıra düğmeli klasik trençkot.",
+    "Material": "%100 Pamuk Gabardin",
+    "CreatedAt": {
+      "$date": "2026-11-19T16:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "XS",
+        "Stock": 2
+      },
+      {
+        "Size": "S",
+        "Stock": 4
+      },
+      {
+        "Size": "M",
+        "Stock": 10
+      },
+      {
+        "Size": "L",
+        "Stock": 6
+      },
+      {
+        "Size": "XL",
+        "Stock": 11
+      }
+    ]
+  },
+  {
+    "Name": "Keten Kruvaze Elbise",
+    "Brand": "LUNE",
+    "Category": "Kadın",
+    "Type": "dress",
+    "ColorName": "Kum Beji",
+    "ColorHex": "#d9c3a5",
+    "Price": 1890,
+    "OldPrice": 2290,
+    "IsNew": true,
+    "Popularity": 98,
+    "Description": "Kruvaze yaka, bel bağcıklı midi boy. Yazın en rahat parçası.",
+    "Material": "%55 Keten, %45 Viskon",
+    "CreatedAt": {
+      "$date": "2026-11-21T17:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "XS",
+        "Stock": 6
+      },
+      {
+        "Size": "S",
+        "Stock": 11
+      },
+      {
+        "Size": "M",
+        "Stock": 7
+      },
+      {
+        "Size": "L",
+        "Stock": 3
+      },
+      {
+        "Size": "XL",
+        "Stock": 8
+      }
+    ]
+  },
+  {
+    "Name": "Slim Fit Kot Pantolon",
+    "Brand": "LUNE Denim",
+    "Category": "Erkek",
+    "Type": "jeans",
+    "ColorName": "Koyu İndigo",
+    "ColorHex": "#2b3a55",
+    "Price": 1290,
+    "OldPrice": 0,
+    "IsNew": false,
+    "Popularity": 96,
+    "Description": "Hafif esneyen denim, dar paça.",
+    "Material": "%98 Pamuk, %2 Elastan",
+    "CreatedAt": {
+      "$date": "2026-11-17T22:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "30",
+        "Stock": 9
+      },
+      {
+        "Size": "32",
+        "Stock": 5
+      },
+      {
+        "Size": "34",
+        "Stock": 10
+      },
+      {
+        "Size": "36",
+        "Stock": 6
+      },
+      {
+        "Size": "38",
+        "Stock": 11
+      }
+    ]
+  },
+  {
+    "Name": "Mom Fit Kot Pantolon",
+    "Brand": "LUNE Denim",
+    "Category": "Kadın",
+    "Type": "jeans",
+    "ColorName": "Orta Mavi",
+    "ColorHex": "#5b7fa6",
+    "Price": 1090,
+    "OldPrice": 1390,
+    "IsNew": false,
+    "Popularity": 95,
+    "Description": "Rahat kalıp, yüksek bel, hafif yıpratma.",
+    "Material": "%100 Pamuk Denim",
+    "CreatedAt": {
+      "$date": "2026-11-20T13:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "36",
+        "Stock": 9
+      },
+      {
+        "Size": "38",
+        "Stock": 5
+      },
+      {
+        "Size": "40",
+        "Stock": 10
+      },
+      {
+        "Size": "42",
+        "Stock": 6
+      },
+      {
+        "Size": "44",
+        "Stock": 11
+      }
+    ]
+  },
+  {
+    "Name": "Deri Omuz Çantası",
+    "Brand": "LUNE Atelier",
+    "Category": "Aksesuar",
+    "Type": "bag",
+    "ColorName": "Taba",
+    "ColorHex": "#9c5b2e",
+    "Price": 2990,
+    "OldPrice": 0,
+    "IsNew": true,
+    "Popularity": 93,
+    "Description": "Ayarlanabilir askı, manyetik kapak.",
+    "Material": "%100 Hakiki Deri",
+    "CreatedAt": {
+      "$date": "2026-11-15T14:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "Tek Beden",
+        "Stock": 14
+      }
+    ]
+  },
+  {
+    "Name": "Saten Slip Elbise",
+    "Brand": "LUNE Studio",
+    "Category": "Kadın",
+    "Type": "dress",
+    "ColorName": "Zümrüt",
+    "ColorHex": "#1f6f5c",
+    "Price": 1790,
+    "OldPrice": 0,
+    "IsNew": true,
+    "Popularity": 92,
+    "Description": "İnce askılı, vücuda zarifçe oturan gece elbisesi.",
+    "Material": "%100 Polyester Saten",
+    "CreatedAt": {
+      "$date": "2026-11-21T03:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "XS",
+        "Stock": 3
+      },
+      {
+        "Size": "S",
+        "Stock": 8
+      },
+      {
+        "Size": "M",
+        "Stock": 4
+      },
+      {
+        "Size": "L",
+        "Stock": 9
+      },
+      {
+        "Size": "XL",
+        "Stock": 0
+      }
+    ]
+  },
+  {
+    "Name": "Organik Pamuk Tişört",
+    "Brand": "LUNE Basics",
+    "Category": "Erkek",
+    "Type": "tshirt",
+    "ColorName": "Antrasit",
+    "ColorHex": "#3a3d42",
+    "Price": 450,
+    "OldPrice": 0,
+    "IsNew": false,
+    "Popularity": 91,
+    "Description": "Regular kalıp, bisiklet yaka.",
+    "Material": "%100 Organik Pamuk",
+    "CreatedAt": {
+      "$date": "2026-11-18T12:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "XS",
+        "Stock": 2
+      },
+      {
+        "Size": "S",
+        "Stock": 8
+      },
+      {
+        "Size": "M",
+        "Stock": 4
+      },
+      {
+        "Size": "L",
+        "Stock": 9
+      },
+      {
+        "Size": "XL",
+        "Stock": 0
+      }
+    ]
+  },
+  {
+    "Name": "Basic Pamuk Tişört",
+    "Brand": "LUNE Basics",
+    "Category": "Kadın",
+    "Type": "tshirt",
+    "ColorName": "Pudra",
+    "ColorHex": "#e8c9c1",
+    "Price": 390,
+    "OldPrice": 0,
+    "IsNew": false,
+    "Popularity": 90,
+    "Description": "Her şeyle uyan, bisiklet yaka temel tişört.",
+    "Material": "%100 Organik Pamuk",
+    "CreatedAt": {
+      "$date": "2026-11-18T19:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "XS",
+        "Stock": 9
+      },
+      {
+        "Size": "S",
+        "Stock": 5
+      },
+      {
+        "Size": "M",
+        "Stock": 10
+      },
+      {
+        "Size": "L",
+        "Stock": 6
+      },
+      {
+        "Size": "XL",
+        "Stock": 11
+      }
+    ]
+  },
+  {
+    "Name": "Kapüşonlu Sweatshirt",
+    "Brand": "LUNE Basics",
+    "Category": "Erkek",
+    "Type": "hoodie",
+    "ColorName": "Gri Melanj",
+    "ColorHex": "#9a9ea3",
+    "Price": 1190,
+    "OldPrice": 0,
+    "IsNew": false,
+    "Popularity": 88,
+    "Description": "İçi yumuşak şardonlu, kanguru cepli.",
+    "Material": "%80 Pamuk, %20 Polyester",
+    "CreatedAt": {
+      "$date": "2026-11-17T08:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "XS",
+        "Stock": 2
+      },
+      {
+        "Size": "S",
+        "Stock": 11
+      },
+      {
+        "Size": "M",
+        "Stock": 7
+      },
+      {
+        "Size": "L",
+        "Stock": 3
+      },
+      {
+        "Size": "XL",
+        "Stock": 8
+      }
+    ]
+  },
+  {
+    "Name": "Keten Gömlek",
+    "Brand": "LUNE",
+    "Category": "Erkek",
+    "Type": "shirt",
+    "ColorName": "Terracotta",
+    "ColorHex": "#c0694a",
+    "Price": 1090,
+    "OldPrice": 0,
+    "IsNew": true,
+    "Popularity": 87,
+    "Description": "Yaz sıcaklarına dost, hafif keten gömlek.",
+    "Material": "%100 Keten",
+    "CreatedAt": {
+      "$date": "2026-11-15T21:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "XS",
+        "Stock": 3
+      },
+      {
+        "Size": "S",
+        "Stock": 8
+      },
+      {
+        "Size": "M",
+        "Stock": 4
+      },
+      {
+        "Size": "L",
+        "Stock": 9
+      },
+      {
+        "Size": "XL",
+        "Stock": 0
+      }
+    ]
+  },
+  {
+    "Name": "Çiçek Desenli Midi Elbise",
+    "Brand": "LUNE",
+    "Category": "Kadın",
+    "Type": "dress",
+    "ColorName": "Bordo",
+    "ColorHex": "#7b2d3b",
+    "Price": 1590,
+    "OldPrice": 0,
+    "IsNew": false,
+    "Popularity": 86,
+    "Description": "Akışkan kumaş, V yaka ve hafif volanlı etek.",
+    "Material": "%100 Viskon",
+    "CreatedAt": {
+      "$date": "2026-11-21T10:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "XS",
+        "Stock": 9
+      },
+      {
+        "Size": "S",
+        "Stock": 5
+      },
+      {
+        "Size": "M",
+        "Stock": 10
+      },
+      {
+        "Size": "L",
+        "Stock": 6
+      },
+      {
+        "Size": "XL",
+        "Stock": 11
+      }
+    ]
+  },
+  {
+    "Name": "Yün Karışım Kaban",
+    "Brand": "LUNE Atelier",
+    "Category": "Erkek",
+    "Type": "coat",
+    "ColorName": "Kömür",
+    "ColorHex": "#34363b",
+    "Price": 4290,
+    "OldPrice": 0,
+    "IsNew": true,
+    "Popularity": 85,
+    "Description": "Düz kesim, gizli düğmeli şık kaban.",
+    "Material": "%70 Yün, %30 Polyamid",
+    "CreatedAt": {
+      "$date": "2026-11-16T18:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "XS",
+        "Stock": 3
+      },
+      {
+        "Size": "S",
+        "Stock": 8
+      },
+      {
+        "Size": "M",
+        "Stock": 4
+      },
+      {
+        "Size": "L",
+        "Stock": 9
+      },
+      {
+        "Size": "XL",
+        "Stock": 0
+      }
+    ]
+  },
+  {
+    "Name": "Bomber Ceket",
+    "Brand": "LUNE Studio",
+    "Category": "Erkek",
+    "Type": "jacket",
+    "ColorName": "Zeytin",
+    "ColorHex": "#5c6b45",
+    "Price": 2190,
+    "OldPrice": 0,
+    "IsNew": false,
+    "Popularity": 82,
+    "Description": "Fermuarlı, ribanalı klasik bomber.",
+    "Material": "%100 Naylon",
+    "CreatedAt": {
+      "$date": "2026-11-16T11:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "XS",
+        "Stock": 6
+      },
+      {
+        "Size": "S",
+        "Stock": 11
+      },
+      {
+        "Size": "M",
+        "Stock": 7
+      },
+      {
+        "Size": "L",
+        "Stock": 3
+      },
+      {
+        "Size": "XL",
+        "Stock": 8
+      }
+    ]
+  },
+  {
+    "Name": "Yüksek Bel Wide Leg Pantolon",
+    "Brand": "LUNE",
+    "Category": "Kadın",
+    "Type": "pants",
+    "ColorName": "Siyah",
+    "ColorHex": "#1c1c1e",
+    "Price": 1190,
+    "OldPrice": 0,
+    "IsNew": false,
+    "Popularity": 80,
+    "Description": "Yüksek bel, bol paça; ofisten akşama.",
+    "Material": "%65 Polyester, %35 Viskon",
+    "CreatedAt": {
+      "$date": "2026-11-20T20:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "36",
+        "Stock": 2
+      },
+      {
+        "Size": "38",
+        "Stock": 11
+      },
+      {
+        "Size": "40",
+        "Stock": 7
+      },
+      {
+        "Size": "42",
+        "Stock": 3
+      },
+      {
+        "Size": "44",
+        "Stock": 8
+      }
+    ]
+  },
+  {
+    "Name": "Chino Pantolon",
+    "Brand": "LUNE",
+    "Category": "Erkek",
+    "Type": "pants",
+    "ColorName": "Haki",
+    "ColorHex": "#8a8566",
+    "Price": 1090,
+    "OldPrice": 1390,
+    "IsNew": false,
+    "Popularity": 78,
+    "Description": "Günlük şıklık için klasik chino.",
+    "Material": "%97 Pamuk, %3 Elastan",
+    "CreatedAt": {
+      "$date": "2026-11-17T15:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "30",
+        "Stock": 3
+      },
+      {
+        "Size": "32",
+        "Stock": 8
+      },
+      {
+        "Size": "34",
+        "Stock": 4
+      },
+      {
+        "Size": "36",
+        "Stock": 9
+      },
+      {
+        "Size": "38",
+        "Stock": 0
+      }
+    ]
+  },
+  {
+    "Name": "Çizgili Oxford Gömlek",
+    "Brand": "LUNE",
+    "Category": "Erkek",
+    "Type": "shirt",
+    "ColorName": "Açık Mavi",
+    "ColorHex": "#a9c4e0",
+    "Price": 990,
+    "OldPrice": 0,
+    "IsNew": false,
+    "Popularity": 77,
+    "Description": "Düğmeli yaka, slim kalıp.",
+    "Material": "%100 Pamuk Oxford",
+    "CreatedAt": {
+      "$date": "2026-11-18T05:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "XS",
+        "Stock": 6
+      },
+      {
+        "Size": "S",
+        "Stock": 11
+      },
+      {
+        "Size": "M",
+        "Stock": 7
+      },
+      {
+        "Size": "L",
+        "Stock": 3
+      },
+      {
+        "Size": "XL",
+        "Stock": 8
+      }
+    ]
+  },
+  {
+    "Name": "Merino Yün Kazak",
+    "Brand": "LUNE",
+    "Category": "Kadın",
+    "Type": "sweater",
+    "ColorName": "Hardal",
+    "ColorHex": "#c79a2b",
+    "Price": 1490,
+    "OldPrice": 0,
+    "IsNew": true,
+    "Popularity": 75,
+    "Description": "Yumuşak dokulu, balıkçı yaka.",
+    "Material": "%100 Merino Yünü",
+    "CreatedAt": {
+      "$date": "2026-11-19T23:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "XS",
+        "Stock": 6
+      },
+      {
+        "Size": "S",
+        "Stock": 11
+      },
+      {
+        "Size": "M",
+        "Stock": 7
+      },
+      {
+        "Size": "L",
+        "Stock": 3
+      },
+      {
+        "Size": "XL",
+        "Stock": 8
+      }
+    ]
+  },
+  {
+    "Name": "Polo Yaka Tişört",
+    "Brand": "LUNE",
+    "Category": "Erkek",
+    "Type": "tshirt",
+    "ColorName": "Lacivert",
+    "ColorHex": "#1f2d4d",
+    "Price": 590,
+    "OldPrice": 0,
+    "IsNew": false,
+    "Popularity": 73,
+    "Description": "Düğmeli polo yaka, regular kalıp.",
+    "Material": "%100 Pike Pamuk",
+    "CreatedAt": {
+      "$date": "2026-11-16T04:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "XS",
+        "Stock": 2
+      },
+      {
+        "Size": "S",
+        "Stock": 5
+      },
+      {
+        "Size": "M",
+        "Stock": 10
+      },
+      {
+        "Size": "L",
+        "Stock": 6
+      },
+      {
+        "Size": "XL",
+        "Stock": 11
+      }
+    ]
+  },
+  {
+    "Name": "Kısa Blazer Ceket",
+    "Brand": "LUNE Studio",
+    "Category": "Kadın",
+    "Type": "jacket",
+    "ColorName": "Taş",
+    "ColorHex": "#a8a29a",
+    "Price": 2390,
+    "OldPrice": 2890,
+    "IsNew": false,
+    "Popularity": 72,
+    "Description": "Dik omuz, tek düğme, kısa kesim blazer.",
+    "Material": "%70 Polyester, %30 Yün",
+    "CreatedAt": {
+      "$date": "2026-11-19T09:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "XS",
+        "Stock": 3
+      },
+      {
+        "Size": "S",
+        "Stock": 8
+      },
+      {
+        "Size": "M",
+        "Stock": 4
+      },
+      {
+        "Size": "L",
+        "Stock": 9
+      },
+      {
+        "Size": "XL",
+        "Stock": 0
+      }
+    ]
+  },
+  {
+    "Name": "Oversize Poplin Gömlek",
+    "Brand": "LUNE",
+    "Category": "Kadın",
+    "Type": "shirt",
+    "ColorName": "Beyaz",
+    "ColorHex": "#f1efe9",
+    "Price": 890,
+    "OldPrice": 0,
+    "IsNew": false,
+    "Popularity": 70,
+    "Description": "Salaş kesim, uzun kollu klasik gömlek.",
+    "Material": "%100 Pamuk Poplin",
+    "CreatedAt": {
+      "$date": "2026-11-20T06:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "XS",
+        "Stock": 3
+      },
+      {
+        "Size": "S",
+        "Stock": 8
+      },
+      {
+        "Size": "M",
+        "Stock": 4
+      },
+      {
+        "Size": "L",
+        "Stock": 9
+      },
+      {
+        "Size": "XL",
+        "Stock": 0
+      }
+    ]
+  },
+  {
+    "Name": "Kalın Örgü Kazak",
+    "Brand": "LUNE",
+    "Category": "Erkek",
+    "Type": "sweater",
+    "ColorName": "Ekru",
+    "ColorHex": "#e6dcc8",
+    "Price": 1590,
+    "OldPrice": 1990,
+    "IsNew": false,
+    "Popularity": 69,
+    "Description": "Balıkçı yaka kalın örgü, kış favorisi.",
+    "Material": "%60 Yün, %40 Akrilik",
+    "CreatedAt": {
+      "$date": "2026-11-17T01:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "XS",
+        "Stock": 9
+      },
+      {
+        "Size": "S",
+        "Stock": 5
+      },
+      {
+        "Size": "M",
+        "Stock": 10
+      },
+      {
+        "Size": "L",
+        "Stock": 6
+      },
+      {
+        "Size": "XL",
+        "Stock": 11
+      }
+    ]
+  },
+  {
+    "Name": "Bez Tote Çanta",
+    "Brand": "LUNE Basics",
+    "Category": "Aksesuar",
+    "Type": "bag",
+    "ColorName": "Ekru",
+    "ColorHex": "#e8e0cf",
+    "Price": 450,
+    "OldPrice": 0,
+    "IsNew": false,
+    "Popularity": 66,
+    "Description": "Geniş iç hacim, günlük kullanım.",
+    "Material": "%100 Pamuk Canvas",
+    "CreatedAt": {
+      "$date": "2026-11-15T00:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "Tek Beden",
+        "Stock": 2
+      }
+    ]
+  },
+  {
+    "Name": "Pileli Midi Etek",
+    "Brand": "LUNE",
+    "Category": "Kadın",
+    "Type": "skirt",
+    "ColorName": "Gece Mavisi",
+    "ColorHex": "#223a5e",
+    "Price": 990,
+    "OldPrice": 1290,
+    "IsNew": false,
+    "Popularity": 64,
+    "Description": "Hareketli pileler, elastik bel.",
+    "Material": "%100 Polyester",
+    "CreatedAt": {
+      "$date": "2026-11-19T02:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "XS",
+        "Stock": 6
+      },
+      {
+        "Size": "S",
+        "Stock": 11
+      },
+      {
+        "Size": "M",
+        "Stock": 7
+      },
+      {
+        "Size": "L",
+        "Stock": 3
+      },
+      {
+        "Size": "XL",
+        "Stock": 8
+      }
+    ]
+  },
+  {
+    "Name": "Yün Atkı",
+    "Brand": "LUNE",
+    "Category": "Aksesuar",
+    "Type": "scarf",
+    "ColorName": "Kırmızı",
+    "ColorHex": "#a62b2b",
+    "Price": 690,
+    "OldPrice": 0,
+    "IsNew": false,
+    "Popularity": 60,
+    "Description": "Kalın dokulu, püsküllü.",
+    "Material": "%100 Yün",
+    "CreatedAt": {
+      "$date": "2026-11-15T07:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "Tek Beden",
+        "Stock": 14
+      }
+    ]
+  },
+  {
+    "Name": "İpek Şal",
+    "Brand": "LUNE Studio",
+    "Category": "Aksesuar",
+    "Type": "scarf",
+    "ColorName": "Pembe",
+    "ColorHex": "#d98ca0",
+    "Price": 890,
+    "OldPrice": 1190,
+    "IsNew": false,
+    "Popularity": 58,
+    "Description": "Hafif, parlak, çok yönlü şal.",
+    "Material": "%100 İpek",
+    "CreatedAt": {
+      "$date": "2026-11-14T17:23:51.626Z"
+    },
+    "Sizes": [
+      {
+        "Size": "Tek Beden",
+        "Stock": 14
+      }
+    ]
+  }
+]

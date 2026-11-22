@@ -1,0 +1,20 @@
+@model RegisterForm
+@{ ViewData["Title"] = "Üye ol"; }
+<div class="auth">
+    <div class="auth-art">
+        <div class="hero-card" style="background:#d6e2d9">@Garments.Svg("dress", "#1f6f5c")</div>
+        <h2>LUNE'a katıl.</h2>
+        <p class="muted">Hızlı ödeme, sipariş takibi ve anlık bildirimler.</p>
+    </div>
+    <div class="auth-form"><div>
+        <h1>Üye ol</h1>
+        <p class="muted" style="margin-bottom:24px">Zaten üye misin? <a style="text-decoration:underline" asp-action="Login" asp-route-returnUrl="@ViewBag.ReturnUrl">Giriş yap</a></p>
+        <form method="post" asp-action="Register" asp-route-returnUrl="@ViewBag.ReturnUrl">
+            @if (!ViewData.ModelState.IsValid && ViewData.ModelState.TryGetValue("", out var general) && general.Errors.Count > 0) { <div class="alert alert-bad">@general.Errors[0].ErrorMessage</div> }
+            <div class="field"><label asp-for="DisplayName">Ad soyad</label><input asp-for="DisplayName" autocomplete="name" /><span asp-validation-for="DisplayName" class="field-error"></span></div>
+            <div class="field"><label asp-for="Email">E-posta</label><input asp-for="Email" type="email" autocomplete="username" /><span asp-validation-for="Email" class="field-error"></span></div>
+            <div class="field"><label asp-for="Password">Şifre</label><input asp-for="Password" type="password" autocomplete="new-password" /><span asp-validation-for="Password" class="field-error"></span></div>
+            <button class="btn btn-dark btn-block" style="margin-top:8px">Üye ol</button>
+        </form>
+    </div></div>
+</div>

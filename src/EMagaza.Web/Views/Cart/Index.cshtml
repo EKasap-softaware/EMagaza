@@ -1,0 +1,62 @@
+@model EMagaza.Application.Carts.Cart
+@{ ViewData["Title"] = "Sepetim"; var pct = Math.Min(100, (int)(Model.Subtotal / EMagaza.Application.Carts.ShippingPolicy.FreeThreshold * 100)); }
+<div class="wrap">
+    <div class="page-head"><h1>Sepetim <small class="muted" style="font-family:var(--sans);font-size:16px">(@Model.ItemCount ürün)</small></h1></div>
+
+    @if (Model.Lines.Count == 0)
+    {
+        <div class="empty"><h3>Sepetin boş</h3><p>Yeni sezon parçalarına göz atmaya ne dersin?</p><a class="btn btn-dark" asp-controller="Shop" asp-action="Index">Alışverişe başla</a></div>
+    }
+    else
+    {
+        <div class="cart-layout">
+            <div>
+                @foreach (var l in Model.Lines)
+                {
+                    <div class="cart-line">
+                        <a class="cart-thumb" style="background:@Garments.Tint(l.ColorHex)" asp-controller="Shop" asp-action="Detail" asp-route-id="@l.ProductId">@Garments.Svg(l.Type, l.ColorHex)</a>
+                        <div>
+                            <div class="pbrand">@l.Brand</div>
+                            <h4>@l.Name</h4>
+                            <div class="meta"><span class="swatch" style="background:@l.ColorHex"></span>@l.ColorName · Beden: <b>@l.Size</b> · @Fmt.Money(l.UnitPrice)</div>
+                            <div class="qty">
+                                <form asp-action="SetQty" method="post"><input type="hidden" name="id" value="@l.ProductId" /><input type="hidden" name="size" value="@l.Size" /><input type="hidden" name="quantity" value="@(l.Quantity - 1)" /><button aria-label="Azalt">−</button></form>
+                                <span>@l.Quantity</span>
+                                <form asp-action="SetQty" method="post"><input type="hidden" name="id" value="@l.ProductId" /><input type="hidden" name="size" value="@l.Size" /><input type="hidden" name="quantity" value="@(l.Quantity + 1)" /><button aria-label="Arttır">+</button></form>
+                            </div>
+                        </div>
+                        <div class="line-total">
+                            @Fmt.Money(l.LineTotal)
+                            <form asp-action="Remove" method="post"><input type="hidden" name="id" value="@l.ProductId" /><input type="hidden" name="size" value="@l.Size" /><button class="linkbtn">Kaldır</button></form>
+                        </div>
+                    </div>
+                }
+                <p style="margin-top:20px"><a class="text-link" style="text-decoration:underline" asp-controller="Shop" asp-action="Index">← Alışverişe devam et</a></p>
+            </div>
+
+            <aside class="summary">
+                <h3>Sipariş özeti</h3>
+                @if (Model.RemainingForFreeShipping > 0) { <div class="small muted">Ücretsiz kargo için <b>@Fmt.Money(Model.RemainingForFreeShipping)</b> daha ekle</div> }
+                else { <div class="small ok"><b>✓ Kargo bedava!</b></div> }
+                <div class="progress"><i style="width:@pct%"></i></div>
+                <div class="sum-row"><span>Ara toplam</span><span>@Fmt.Money(Model.Subtotal)</span></div>
+                @if (Model.CouponCode is not null)
+                {
+                    <div class="sum-row ok"><span>Kupon <b>@Model.CouponCode</b></span><span>−@Fmt.Money(Model.Discount)</span></div>
+                    <form asp-action="RemoveCoupon" method="post"><button class="linkbtn">Kuponu kaldır</button></form>
+                }
+                else
+                {
+                    <form asp-action="ApplyCoupon" method="post" class="coupon-form">
+                        <input name="code" placeholder="Kupon kodu" autocomplete="off" aria-label="Kupon kodu" />
+                        <button class="btn btn-sm">Uygula</button>
+                    </form>
+                }
+                <div class="sum-row"><span>Kargo</span><span>@(Model.ShippingFee == 0 ? "Ücretsiz" : Fmt.Money(Model.ShippingFee))</span></div>
+                <div class="sum-row sum-total"><span>Toplam</span><span>@Fmt.Money(Model.Total)</span></div>
+                <a class="btn btn-dark btn-block" style="margin-top:18px" asp-controller="Checkout" asp-action="Index">Güvenli ödemeye geç</a>
+                <div class="secure">🔒 256-bit güvenli ödeme</div>
+            </aside>
+        </div>
+    }
+</div>

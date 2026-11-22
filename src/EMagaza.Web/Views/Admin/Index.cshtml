@@ -1,0 +1,84 @@
+@model DashboardSummary
+@{ ViewData["Title"] = "Yönetim paneli"; }
+<div class="wrap">
+    <div class="page-head" style="display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap">
+        <h1>Yönetim paneli</h1>
+        <div class="actions">
+            <a class="btn btn-sm btn-dark" asp-action="Products">Ürün yönetimi →</a>
+            <a class="btn btn-sm" asp-action="Users">Kullanıcılar &amp; roller →</a>
+        </div>
+    </div>
+
+    <div class="adm-stats">
+        <div class="stat"><small>Ciro (ödenen siparişler)</small><b>@Fmt.Money(Model.Revenue)</b></div>
+        <div class="stat"><small>Sipariş</small><b>@Model.OrderCount</b></div>
+        <div class="stat"><small>Üye</small><b>@Model.UserCount</b></div>
+        <div class="stat"><small>Kuyrukta bekleyen mesaj (RabbitMQ)</small><b class="@(Model.Queue is { Messages: > 0 } ? "bad" : "ok")">@(Model.Queue?.Messages.ToString() ?? "?")</b></div>
+        <div class="stat"><small>Kuyruğu dinleyen Worker</small><b class="@(Model.Queue is { Consumers: > 0 } ? "ok" : "bad")">@(Model.Queue?.Consumers.ToString() ?? "?")</b></div>
+        <div class="stat"><small>Müşteriye giden bildirim</small><b>@Model.NotificationCount</b></div>
+    </div>
+    @if (Model.Queue is null) { <p class="bad">⚠ RabbitMQ'ya ulaşılamıyor.</p> }
+    else if (Model.Queue.Consumers == 0) { <p class="bad">⚠ Hiçbir Worker kuyruğu dinlemiyor: bildirimler ve e-postalar BEKLİYOR. Worker açılınca işlenecek.</p> }
+    else { <p class="ok">✔ RabbitMQ çalışıyor, Worker kuyruğu dinliyor.</p> }
+
+    <h2 class="sec">Siparişler <small>(MongoDB · orders) — durumu ilerlet, müşteriye bildirim gitsin</small></h2>
+    <div class="tbl"><table>
+        <tr><th>No</th><th>Müşteri</th><th>Tutar</th><th>Ödeme</th><th>Durum</th><th>Tarih</th><th>İşlem</th></tr>
+        @foreach (var o in Model.RecentOrders)
+        {
+            <tr>
+                <td><a style="text-decoration:underline" asp-controller="Orders" asp-action="Detail" asp-route-id="@o.Id">@o.Number</a></td>
+                <td>@o.CustomerName<br /><small class="muted">@o.Email</small></td>
+                <td>@Fmt.Money(o.Total)</td>
+                <td>@o.PaymentBrand ·@o.PaymentLast4</td>
+                <td><span class="status st-@o.Status">@StatusText.Label(o.Status)</span>@if (o.TrackingNumber is not null) { <br /><small class="muted">@o.TrackingNumber</small> }</td>
+                <td>@Fmt.Date(o.CreatedAt)</td>
+                <td>
+                    @if (o.Status is OrderStatus.Delivered or OrderStatus.Cancelled)
+                    {
+                        <span class="muted">@(o.Status == OrderStatus.Cancelled ? "İptal edildi" : "Tamamlandı")</span>
+                    }
+                    else
+                    {
+                        <div class="actions">
+                            <form asp-action="Advance" method="post" class="inline">
+                                <input type="hidden" name="id" value="@o.Id" />
+                                @if (o.Status == OrderStatus.Preparing) { <input type="text" name="tracking" placeholder="Takip no (boşsa otomatik)" /> }
+                                <button class="btn btn-sm btn-dark">@StatusText.NextAction(o.Status)</button>
+                            </form>
+                            @if (o.CanCancel)
+                            {
+                                <form asp-action="CancelOrder" method="post" class="inline" onsubmit="return confirm('Sipariş iptal edilsin mi? Ödeme iade edilir.')">
+                                    <input type="hidden" name="id" value="@o.Id" />
+                                    <button class="btn btn-sm">İptal</button>
+                                </form>
+                            }
+                        </div>
+                    }
+                </td>
+            </tr>
+        }
+        @if (Model.RecentOrders.Count == 0) { <tr><td colspan="7" class="muted">Henüz sipariş yok.</td></tr> }
+    </table></div>
+
+    <h2 class="sec">E-posta kutusu <small>(Worker'ın RabbitMQ'dan alıp işlediği mesajlar · emaillogs)</small></h2>
+    <div class="tbl"><table>
+        <tr><th>Tür</th><th>Kime</th><th>Konu</th><th>Gönderim</th></tr>
+        @foreach (var e in Model.RecentEmails) { <tr><td>@e.Kind</td><td>@e.To</td><td>@e.Subject</td><td>@Fmt.Date(e.SentAt)</td></tr> }
+        @if (Model.RecentEmails.Count == 0) { <tr><td colspan="4" class="muted">Henüz e-posta yok.</td></tr> }
+    </table></div>
+
+    <h2 class="sec">Düşük stok <small>(beden bazında, ≤ 3 adet)</small></h2>
+    <div class="tbl"><table>
+        <tr><th>Ürün</th><th>Kategori</th><th>Beden</th><th>Stok</th></tr>
+        @foreach (var item in Model.LowStock) { <tr><td>@item.Product.Name <small class="muted">@item.Product.ColorName</small></td><td>@item.Product.Category</td><td>@item.Size.Size</td><td class="@(item.Size.Stock == 0 ? "bad" : "")">@(item.Size.Stock == 0 ? "Tükendi" : item.Size.Stock.ToString())</td></tr> }
+        @if (Model.LowStock.Count == 0) { <tr><td colspan="4" class="muted">Düşük stoklu ürün yok.</td></tr> }
+    </table></div>
+
+    <h2 class="sec">Son yorumlar <small>(MongoDB · reviews)</small></h2>
+    <div class="tbl"><table>
+        <tr><th>Yazar</th><th>Puan</th><th>Yorum</th><th>Tarih</th></tr>
+        @foreach (var r in Model.RecentReviews) { <tr><td>@r.Author</td><td class="stars">@(new string('★', r.Rating))</td><td>@r.Comment</td><td>@Fmt.Date(r.CreatedAt)</td></tr> }
+        @if (Model.RecentReviews.Count == 0) { <tr><td colspan="4" class="muted">Henüz yorum yok.</td></tr> }
+    </table></div>
+</div>

@@ -1,0 +1,32 @@
+[
+  {
+    "Code": "HOSGELDIN10",
+    "Description": "Tüm alışverişlerde %10 indirim",
+    "Kind": "Percent",
+    "Value": 10,
+    "MinSubtotal": 0,
+    "UsageLimit": 0,
+    "UsedCount": 0,
+    "IsActive": true
+  },
+  {
+    "Code": "YAZ200",
+    "Description": "1.500 ₺ ve üzeri alışverişte 200 ₺ indirim",
+    "Kind": "Fixed",
+    "Value": 200,
+    "MinSubtotal": 1500,
+    "UsageLimit": 0,
+    "UsedCount": 0,
+    "IsActive": true
+  },
+  {
+    "Code": "SON3",
+    "Description": "Sınırlı kampanya: toplam 3 kullanım, %25 indirim",
+    "Kind": "Percent",
+    "Value": 25,
+    "MinSubtotal": 500,
+    "UsageLimit": 3,
+    "UsedCount": 0,
+    "IsActive": true
+  }
+]

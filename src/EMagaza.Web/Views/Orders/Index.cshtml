@@ -1,0 +1,23 @@
+@model IReadOnlyList<Order>
+@{ ViewData["Title"] = "Siparişlerim"; }
+<div class="wrap">
+    <div class="page-head"><h1>Siparişlerim</h1></div>
+    @if (Model.Count == 0)
+    {
+        <div class="empty"><h3>Henüz siparişin yok</h3><a class="btn btn-dark" asp-controller="Shop" asp-action="Index">Alışverişe başla</a></div>
+    }
+    @foreach (var o in Model)
+    {
+        <a class="order-card" asp-action="Detail" asp-route-id="@o.Id">
+            <div>
+                <div class="order-no">@o.Number</div>
+                <div class="muted small">@Fmt.Date(o.CreatedAt) · @o.ItemCount ürün</div>
+                <div class="thumbs">@foreach (var i in o.Items.Take(5)) { <div class="cart-thumb" style="background:@Garments.Tint(i.ColorHex)">@Garments.Svg(i.Type, i.ColorHex)</div> }</div>
+            </div>
+            <div style="text-align:right">
+                <span class="status st-@o.Status">@StatusText.Label(o.Status)</span>
+                <div style="font-weight:600;margin-top:10px">@Fmt.Money(o.Total)</div>
+            </div>
+        </a>
+    }
+</div>

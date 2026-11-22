@@ -1,0 +1,18 @@
+# EMagaza.Worker: kuyruğu dinleyen arka plan servisi (web sunucusu YOK → aspnet değil, daha küçük 'runtime' imajı)
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+COPY EMagaza.sln .
+COPY src/EMagaza.Domain/*.csproj src/EMagaza.Domain/
+COPY src/EMagaza.Application/*.csproj src/EMagaza.Application/
+COPY src/EMagaza.Infrastructure/*.csproj src/EMagaza.Infrastructure/
+COPY src/EMagaza.Web/*.csproj src/EMagaza.Web/
+COPY src/EMagaza.Worker/*.csproj src/EMagaza.Worker/
+COPY tests/EMagaza.Tests/*.csproj tests/EMagaza.Tests/
+RUN dotnet restore
+COPY . .
+RUN dotnet publish src/EMagaza.Worker -c Release -o /app --no-restore
+
+FROM mcr.microsoft.com/dotnet/runtime:9.0
+WORKDIR /app
+COPY --from=build /app .
+ENTRYPOINT ["dotnet", "EMagaza.Worker.dll"]

@@ -1,0 +1,19 @@
+@model LoginForm
+@{ ViewData["Title"] = "Giriş yap"; }
+<div class="auth">
+    <div class="auth-art">
+        <div class="hero-card" style="background:#e3cdb0">@Garments.Svg("coat", "#b88a5a")</div>
+        <h2>Tekrar hoş geldin.</h2>
+        <p class="muted">Siparişlerini ve bildirimlerini takip etmek için giriş yap.</p>
+    </div>
+    <div class="auth-form"><div>
+        <h1>Giriş yap</h1>
+        <p class="muted" style="margin-bottom:24px">Hesabın yok mu? <a style="text-decoration:underline" asp-action="Register" asp-route-returnUrl="@ViewBag.ReturnUrl">Üye ol</a></p>
+        <form method="post" asp-action="Login" asp-route-returnUrl="@ViewBag.ReturnUrl">
+            @if (!ViewData.ModelState.IsValid && ViewData.ModelState.TryGetValue("", out var general) && general.Errors.Count > 0) { <div class="alert alert-bad">@general.Errors[0].ErrorMessage</div> }
+            <div class="field"><label asp-for="Email">E-posta</label><input asp-for="Email" type="email" autocomplete="username" /><span asp-validation-for="Email" class="field-error"></span></div>
+            <div class="field"><label asp-for="Password">Şifre</label><input asp-for="Password" type="password" autocomplete="current-password" /><span asp-validation-for="Password" class="field-error"></span></div>
+            <button class="btn btn-dark btn-block" style="margin-top:8px">Giriş yap</button>
+        </form>
+    </div></div>
+</div>

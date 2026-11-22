@@ -1,0 +1,87 @@
+@model ShopViewModel
+@{
+    var q = Model.Query;
+    ViewData["Title"] = q.Category ?? (q.SaleOnly ? "İndirim" : q.NewOnly ? "Yeni Sezon" : "Tüm Ürünler");
+    var sizes = new[] { "XS", "S", "M", "L", "XL", "30", "32", "34", "36", "38", "40", "42", "44" };
+    // Sayfa değişince mevcut filtreler korunur.
+    Dictionary<string, string?> PageRoute(int page) => new()
+    {
+        ["category"] = q.Category, ["type"] = q.Type, ["size"] = q.Size, ["q"] = q.Text,
+        ["sort"] = q.Sort == ProductSort.Featured ? null : q.Sort.ToString(),
+        ["sale"] = q.SaleOnly ? "true" : null, ["isnew"] = q.NewOnly ? "true" : null,
+        ["page"] = page.ToString()
+    };
+    var filtered =q.Type != null || q.Size != null || q.SaleOnly || q.NewOnly || !string.IsNullOrWhiteSpace(q.Text);
+}
+<div class="wrap">
+    <div class="page-head">
+        <div class="crumbs"><a asp-controller="Home" asp-action="Index">Ana sayfa</a> / @ViewData["Title"]</div>
+        <h1>@ViewData["Title"]</h1>
+        @if (!string.IsNullOrWhiteSpace(q.Text)) { <p class="muted">“@q.Text” için sonuçlar</p> }
+    </div>
+
+    <form method="get" id="f" class="shop-layout">
+        <aside class="filters">
+            <input type="hidden" name="q" value="@q.Text" />
+            <h4>Kategori</h4>
+            <div class="chips">
+                <label class="chip"><input type="radio" name="category" value="" checked="@(q.Category == null)" onchange="this.form.submit()" /><span>Tümü</span></label>
+                @foreach (var c in Model.Categories)
+                {
+                    <label class="chip"><input type="radio" name="category" value="@c" checked="@(q.Category == c)" onchange="this.form.submit()" /><span>@c</span></label>
+                }
+            </div>
+            <h4>Ürün tipi</h4>
+            <div class="chips">
+                <label class="chip"><input type="radio" name="type" value="" checked="@(q.Type == null)" onchange="this.form.submit()" /><span>Hepsi</span></label>
+                @foreach (var t in Model.Types)
+                {
+                    <label class="chip"><input type="radio" name="type" value="@t" checked="@(q.Type == t)" onchange="this.form.submit()" /><span>@Garments.Label(t)</span></label>
+                }
+            </div>
+            <h4>Beden (stokta)</h4>
+            <div class="chips">
+                <label class="chip"><input type="radio" name="size" value="" checked="@(q.Size == null)" onchange="this.form.submit()" /><span>Hepsi</span></label>
+                @foreach (var s in sizes)
+                {
+                    <label class="chip"><input type="radio" name="size" value="@s" checked="@(q.Size == s)" onchange="this.form.submit()" /><span>@s</span></label>
+                }
+            </div>
+            <h4>Öne çıkanlar</h4>
+            <label class="check"><input type="checkbox" name="sale" value="true" checked="@q.SaleOnly" onchange="this.form.submit()" /> Sadece indirimdekiler</label>
+            <label class="check"><input type="checkbox" name="isnew" value="true" checked="@q.NewOnly" onchange="this.form.submit()" /> Yeni sezon</label>
+            @if (filtered || q.Category != null) { <a class="clear-link" asp-action="Index">Filtreleri temizle</a> }
+        </aside>
+
+        <section>
+            <div class="toolbar">
+                <span>@Model.Products.Count ürün</span>
+                <select class="select" name="sort" onchange="this.form.submit()" aria-label="Sırala">
+                    <option value="Featured" selected="@(q.Sort == ProductSort.Featured)">Önerilen</option>
+                    <option value="Newest" selected="@(q.Sort == ProductSort.Newest)">En yeniler</option>
+                    <option value="PriceAsc" selected="@(q.Sort == ProductSort.PriceAsc)">Fiyat: düşükten yükseğe</option>
+                    <option value="PriceDesc" selected="@(q.Sort == ProductSort.PriceDesc)">Fiyat: yüksekten düşüğe</option>
+                </select>
+            </div>
+            @if (Model.Products.Count == 0)
+            {
+                <div class="empty"><h3>Sonuç bulunamadı</h3><p>Filtreleri değiştirmeyi dene.</p><a class="btn" asp-action="Index">Tüm ürünler</a></div>
+            }
+            else
+            {
+                <div class="grid grid-3">@foreach (var p in Model.Products) { <partial name="_ProductCard" model="p" /> }</div>
+                @if (Model.Result.TotalPages > 1)
+                {
+                    <nav class="pager" aria-label="Sayfalar">
+                        @if (Model.Result.HasPrevious) { <a class="btn btn-sm" asp-action="Index" asp-all-route-data="@PageRoute(Model.Result.Page - 1)">← Önceki</a> }
+                        @for (var i = 1; i <= Model.Result.TotalPages; i++)
+                        {
+                            <a class="page-no @(i == Model.Result.Page ? "current" : "")" asp-action="Index" asp-all-route-data="@PageRoute(i)">@i</a>
+                        }
+                        @if (Model.Result.HasNext) { <a class="btn btn-sm" asp-action="Index" asp-all-route-data="@PageRoute(Model.Result.Page + 1)">Sonraki →</a> }
+                    </nav>
+                }
+            }
+        </section>
+    </form>
+</div>

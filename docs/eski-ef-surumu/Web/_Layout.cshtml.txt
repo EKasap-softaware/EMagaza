@@ -1,0 +1,32 @@
+﻿@using EMagaza.Web.Infrastructure
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] · EMağaza</title>
+    <link rel="stylesheet" href="~/css/store.css" asp-append-version="true" />
+</head>
+<body>
+<header class="topbar">
+    <div class="wrap bar">
+        <a class="logo" asp-controller="Shop" asp-action="Index"><span>🛍️</span> E<b>Mağaza</b></a>
+        <form class="search" asp-controller="Shop" asp-action="Index" method="get">
+            <input name="q" placeholder="Ürün ara…" value="@ViewBag.Query" />
+        </form>
+        <a class="cart-btn" asp-controller="Cart" asp-action="Index">
+            🛒 Sepet <span class="badge">@Context.Session.GetCart().ItemCount</span>
+        </a>
+    </div>
+</header>
+
+@if (TempData["Toast"] is string toast)
+{
+    <div class="toast">✅ @toast</div>
+}
+
+<main class="wrap">@RenderBody()</main>
+
+<footer class="foot">© 2026 EMağaza · .NET 9 · EF Core · SQLite</footer>
+</body>
+</html>

@@ -1,0 +1,42 @@
+@model ProfileViewModel
+@{ ViewData["Title"] = "Hesabım"; }
+<div class="wrap">
+    <div class="page-head"><h1>Hesabım</h1><p class="muted">@Model.DisplayName · @Model.Email</p></div>
+
+    <div class="profile-grid">
+        <div class="panel">
+            <h3>Adreslerim</h3>
+            @if (Model.Addresses.Count == 0) { <p class="muted">Henüz kayıtlı adresin yok. Ödeme sırasında tek tıkla kullanabilirsin.</p> }
+            @foreach (var a in Model.Addresses)
+            {
+                <div class="addr">
+                    <div><b>@a.Title</b><br /><span class="muted">@a.FullName · @a.Phone<br />@a.Line, @a.City</span></div>
+                    <form asp-action="DeleteAddress" method="post"><input type="hidden" name="id" value="@a.Id" /><button class="linkbtn">Sil</button></form>
+                </div>
+            }
+
+            <h3 style="margin-top:26px;font-size:22px">Yeni adres</h3>
+            <form asp-action="AddAddress" method="post">
+                <div class="row2">
+                    <div class="field"><label>Başlık</label><input name="NewAddress.Title" placeholder="Ev" required /></div>
+                    <div class="field"><label>Ad soyad</label><input name="NewAddress.FullName" value="@Model.DisplayName" required /></div>
+                </div>
+                <div class="row2">
+                    <div class="field"><label>Telefon</label><input name="NewAddress.Phone" placeholder="05xx xxx xx xx" required /></div>
+                    <div class="field"><label>İl</label><input name="NewAddress.City" required /></div>
+                </div>
+                <div class="field"><label>Adres</label><input name="NewAddress.Line" placeholder="Mahalle, sokak, no, daire" required /></div>
+                <button class="btn btn-dark">Adresi kaydet</button>
+            </form>
+        </div>
+
+        <div class="panel">
+            <h3>Şifre değiştir</h3>
+            <form asp-action="ChangePassword" method="post">
+                <div class="field"><label>Mevcut şifre</label><input name="Password.CurrentPassword" type="password" autocomplete="current-password" required /></div>
+                <div class="field"><label>Yeni şifre</label><input name="Password.NewPassword" type="password" autocomplete="new-password" minlength="6" required /></div>
+                <button class="btn btn-dark">Şifreyi güncelle</button>
+            </form>
+        </div>
+    </div>
+</div>

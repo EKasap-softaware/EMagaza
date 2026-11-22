@@ -1,0 +1,74 @@
+@model HomeViewModel
+@{ ViewData["Title"] = "Yeni Sezon"; }
+
+<section class="hero">
+    <div class="wrap hero-in">
+        <div>
+            <div class="eyebrow">Sonbahar · Kış 2026</div>
+            <h1 class="h-display">Zamansız<br />parçalar, <em>her gün</em><br />için.</h1>
+            <p class="lead">Doğal kumaşlar, sade kesimler ve uzun yıllar giyeceğin klasikler. Yeni sezon koleksiyonu şimdi LUNE'da.</p>
+            <div class="hero-cta">
+                <a class="btn btn-dark" asp-controller="Shop" asp-action="Index" asp-route-category="Kadın">Kadın koleksiyonu</a>
+                <a class="btn" asp-controller="Shop" asp-action="Index" asp-route-category="Erkek">Erkek koleksiyonu</a>
+            </div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+            <div class="hero-card" style="background:#e3cdb0">@Garments.Svg("coat", "#b88a5a")</div>
+            <div class="hero-card" style="background:#d6e2d9">@Garments.Svg("dress", "#1f6f5c")</div>
+            <div class="hero-card" style="background:#e9d3d6">@Garments.Svg("sweater", "#c79a2b")</div>
+        </div>
+    </div>
+</section>
+
+<div class="perks"><div class="wrap perks-in">
+    <div class="perk"><b>Ücretsiz kargo</b><span>1.500 ₺ ve üzeri siparişlerde</span></div>
+    <div class="perk"><b>14 gün iade</b><span>Sebep göstermeden, ücretsiz</span></div>
+    <div class="perk"><b>Güvenli ödeme</b><span>Visa, Mastercard, Troy</span></div>
+    <div class="perk"><b>Anında bildirim</b><span>Siparişin her adımında haberdar ol</span></div>
+</div></div>
+
+<div class="wrap">
+    @if (ViewBag.Error == true)
+    {
+        <div class="empty">Ürünler şu an yüklenemiyor. Lütfen birazdan tekrar dene.</div>
+    }
+    else
+    {
+        <section class="section">
+            <div class="sec-head"><h2>Kategoriler</h2></div>
+            <div class="cat-grid">
+                <a class="cat-tile" asp-controller="Shop" asp-action="Index" asp-route-category="Kadın" style="background:#ecd9d3">@Garments.Svg("dress", "#7b2d3b")<span class="label">Kadın →</span></a>
+                <a class="cat-tile" asp-controller="Shop" asp-action="Index" asp-route-category="Erkek" style="background:#d9e0ea">@Garments.Svg("shirt", "#a9c4e0")<span class="label">Erkek →</span></a>
+                <a class="cat-tile" asp-controller="Shop" asp-action="Index" asp-route-category="Aksesuar" style="background:#eadfcb">@Garments.Svg("bag", "#9c5b2e")<span class="label">Aksesuar →</span></a>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="sec-head"><h2>Yeni gelenler</h2><a asp-controller="Shop" asp-action="Index" asp-route-isnew="true">Tümünü gör</a></div>
+            <div class="grid">@foreach (var p in Model.New) { <partial name="_ProductCard" model="p" /> }</div>
+        </section>
+
+        <div class="promo">
+            <div>
+                <div class="eyebrow" style="color:#f1c27d">Sezon fırsatları</div>
+                <h2>Seçili parçalarda <em>%35'e</em> varan indirim</h2>
+                <p>Stoklar sınırlı. Favori parçalarını kaçırmadan yakala.</p>
+                <a class="btn btn-light" asp-controller="Shop" asp-action="Index" asp-route-sale="true">İndirimdekileri gör</a>
+            </div>
+            <div class="promo-art" aria-hidden="true">
+                <div class="pa">@Garments.Svg("jacket", "#a8a29a")</div>
+                <div class="pa" style="margin-top:34px">@Garments.Svg("skirt", "#223a5e")</div>
+            </div>
+        </div>
+
+        <section class="section">
+            <div class="sec-head"><h2>İndirimdekiler</h2><a asp-controller="Shop" asp-action="Index" asp-route-sale="true">Tümünü gör</a></div>
+            <div class="grid">@foreach (var p in Model.Sale) { <partial name="_ProductCard" model="p" /> }</div>
+        </section>
+
+        <section class="section">
+            <div class="sec-head"><h2>Çok satanlar</h2><a asp-controller="Shop" asp-action="Index">Tüm ürünler</a></div>
+            <div class="grid">@foreach (var p in Model.Best) { <partial name="_ProductCard" model="p" /> }</div>
+        </section>
+    }
+</div>

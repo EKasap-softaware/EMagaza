@@ -1,0 +1,75 @@
+@model CheckoutForm
+@{ ViewData["Title"] = "Ödeme"; var cart = (EMagaza.Application.Carts.Cart)ViewBag.Cart; }
+<div class="wrap">
+    <div class="page-head"><div class="steps"><span>Sepet</span> › <b>Teslimat &amp; Ödeme</b> › <span>Onay</span></div><h1>Ödeme</h1></div>
+
+    <form method="post" asp-action="Index" class="checkout-layout" autocomplete="on">
+        <div style="display:grid;gap:24px">
+            @if (!ViewData.ModelState.IsValid && ViewData.ModelState.TryGetValue("", out var general) && general.Errors.Count > 0)
+            {
+                <div class="alert alert-bad"><b>Ödeme tamamlanamadı:</b> @general.Errors[0].ErrorMessage</div>
+            }
+
+            <div class="panel">
+                <h3>Teslimat bilgileri</h3>
+                @if (ViewBag.Addresses is IReadOnlyList<Address> saved && saved.Count > 0)
+                {
+                    <div class="saved-addresses">
+                        <span class="small muted">Kayıtlı adreslerim:</span>
+                        @foreach (var a in saved)
+                        {
+                            <button type="button" class="chip-btn" data-fill-address
+                                    data-name="@a.FullName" data-phone="@a.Phone" data-city="@a.City" data-line="@a.Line">@a.Title</button>
+                        }
+                    </div>
+                }
+                <div class="row2">
+                    <div class="field"><label asp-for="CustomerName">Ad soyad</label><input asp-for="CustomerName" autocomplete="name" /><span asp-validation-for="CustomerName" class="field-error"></span></div>
+                    <div class="field"><label asp-for="Phone">Telefon</label><input asp-for="Phone" placeholder="05xx xxx xx xx" autocomplete="tel" /><span asp-validation-for="Phone" class="field-error"></span></div>
+                </div>
+                <div class="field"><label asp-for="Email">E-posta</label><input asp-for="Email" type="email" autocomplete="email" /><span asp-validation-for="Email" class="field-error"></span></div>
+                <div class="row2">
+                    <div class="field"><label asp-for="City">İl</label><input asp-for="City" autocomplete="address-level1" /><span asp-validation-for="City" class="field-error"></span></div>
+                    <div class="field"><label asp-for="Address">Adres</label><input asp-for="Address" autocomplete="street-address" placeholder="Mahalle, sokak, no, daire" /><span asp-validation-for="Address" class="field-error"></span></div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3>Ödeme</h3>
+                <div class="testcards">
+                    <b>Simüle ödeme (gerçek para çekilmez).</b> Test kartı kullan:
+                    <div>
+                        <button type="button" data-fill-card="4242 4242 4242 4242">Onaylanan kart · Visa</button>
+                        <button type="button" data-fill-card="5555 5555 5555 4444">Onaylanan kart · Mastercard</button>
+                        <button type="button" data-fill-card="4000 0000 0000 0002">Reddedilen kart</button>
+                    </div>
+                </div>
+                <div class="field"><label asp-for="CardNumber">Kart numarası</label><input asp-for="CardNumber" data-card-number inputmode="numeric" autocomplete="off" placeholder="0000 0000 0000 0000" /><span asp-validation-for="CardNumber" class="field-error"></span></div>
+                <div class="row3">
+                    <div class="field"><label asp-for="CardHolder">Kart üzerindeki isim</label><input asp-for="CardHolder" autocomplete="off" style="text-transform:uppercase" /><span asp-validation-for="CardHolder" class="field-error"></span></div>
+                    <div class="field"><label asp-for="Expiry">AA/YY</label><input asp-for="Expiry" data-card-expiry inputmode="numeric" placeholder="12/30" autocomplete="off" /><span asp-validation-for="Expiry" class="field-error"></span></div>
+                    <div class="field"><label asp-for="Cvc">CVC</label><input asp-for="Cvc" data-card-cvc inputmode="numeric" placeholder="123" autocomplete="off" /><span asp-validation-for="Cvc" class="field-error"></span></div>
+                </div>
+                <p class="small muted">Kart bilgilerin sunucuda saklanmaz; siparişe sadece kartın son 4 hanesi yazılır.</p>
+            </div>
+        </div>
+
+        <aside class="summary">
+            <h3>Siparişin</h3>
+            @foreach (var l in cart.Lines)
+            {
+                <div class="mini-line">
+                    <div class="cart-thumb" style="background:@Garments.Tint(l.ColorHex)">@Garments.Svg(l.Type, l.ColorHex)</div>
+                    <div><div>@l.Name</div><div class="small muted">@l.Size · @l.Quantity adet</div></div>
+                    <div>@Fmt.Money(l.LineTotal)</div>
+                </div>
+            }
+            <div class="sum-row" style="margin-top:10px"><span>Ara toplam</span><span>@Fmt.Money(cart.Subtotal)</span></div>
+            @if (cart.CouponCode is not null) { <div class="sum-row ok"><span>Kupon @cart.CouponCode</span><span>−@Fmt.Money(cart.Discount)</span></div> }
+            <div class="sum-row"><span>Kargo</span><span>@(cart.ShippingFee == 0 ? "Ücretsiz" : Fmt.Money(cart.ShippingFee))</span></div>
+            <div class="sum-row sum-total"><span>Ödenecek tutar</span><span>@Fmt.Money(cart.Total)</span></div>
+            <button class="btn btn-dark btn-block" style="margin-top:18px">@Fmt.Money(cart.Total) öde</button>
+            <div class="secure">🔒 Ödemen 256-bit şifreleme ile korunur</div>
+        </aside>
+    </form>
+</div>

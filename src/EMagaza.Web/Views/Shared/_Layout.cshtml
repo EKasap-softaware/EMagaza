@@ -1,0 +1,115 @@
+@inject EMagaza.Application.Interfaces.Repositories.INotificationRepository Notifs
+@inject EMagaza.Web.Services.ICartStore CartStore
+@{
+    var signedIn = User.Identity?.IsAuthenticated == true;
+    long unread = 0;
+    if (signedIn) { try { unread = await Notifs.CountUnreadAsync(User.GetUserId()!); } catch { /* Mongo kapalıysa rozet 0 */ } }
+    var cartCount = CartStore.Get().ItemCount;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] · LUNE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" />
+    <link rel="stylesheet" href="~/css/store.css" asp-append-version="true" />
+</head>
+<body>
+<div class="announce">1.500 ₺ ve üzeri alışverişlerde <b>kargo bedava</b> · 14 gün koşulsuz iade</div>
+<header class="topbar">
+    <div class="wrap bar">
+        <nav class="nav-left">
+            <a asp-controller="Shop" asp-action="Index" asp-route-category="Kadın">Kadın</a>
+            <a asp-controller="Shop" asp-action="Index" asp-route-category="Erkek">Erkek</a>
+            <a asp-controller="Shop" asp-action="Index" asp-route-category="Aksesuar">Aksesuar</a>
+            <a asp-controller="Shop" asp-action="Index" asp-route-isnew="true">Yeni Sezon</a>
+            <a class="sale-link" asp-controller="Shop" asp-action="Index" asp-route-sale="true">İndirim</a>
+        </nav>
+        <a class="logo" asp-controller="Home" asp-action="Index">LUNE</a>
+        <div class="nav-right">
+            <form class="search" asp-controller="Shop" asp-action="Index" method="get">
+                <input name="q" placeholder="Ara…" value="@Context.Request.Query["q"]" aria-label="Ürün ara" />
+            </form>
+            @if (signedIn)
+            {
+                <a class="icon-btn" asp-controller="Favorites" asp-action="Index" title="Favorilerim" aria-label="Favorilerim">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 21s-7-4.6-9.3-9.1C1.3 8.9 2.9 5 6.6 5c2 0 3.4 1.1 5.4 3.2C14 6.1 15.4 5 17.4 5c3.7 0 5.3 3.9 3.9 6.9C19 16.4 12 21 12 21z"/></svg>
+                </a>
+                <a class="icon-btn" asp-controller="Notifications" asp-action="Index" title="Bildirimler" aria-label="Bildirimler">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+                    <span class="badge bell-badge" id="bell-badge" @(unread == 0 ? "hidden" : "")>@unread</span>
+                </a>
+                <div class="user-menu">
+                    <button class="icon-btn" type="button" aria-label="Hesabım">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+                    </button>
+                    <div class="dropdown">
+                        <div class="dd-head">@User.Identity!.Name</div>
+                        <a asp-controller="Account" asp-action="Profile">Hesabım &amp; adreslerim</a>
+                        <a asp-controller="Orders" asp-action="Index">Siparişlerim</a>
+                        <a asp-controller="Favorites" asp-action="Index">Favorilerim</a>
+                        <a asp-controller="Notifications" asp-action="Index">Bildirimlerim</a>
+                        @if (User.IsInRole("Admin")) { <a asp-controller="Admin" asp-action="Index">Yönetim paneli</a> }
+                        <form asp-controller="Account" asp-action="Logout" method="post"><button class="dd-btn">Çıkış yap</button></form>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <a class="text-link" asp-controller="Account" asp-action="Login">Giriş</a>
+                <a class="btn btn-dark btn-sm" asp-controller="Account" asp-action="Register">Üye ol</a>
+            }
+            <a class="icon-btn" asp-controller="Cart" asp-action="Index" title="Sepet" aria-label="Sepet">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+                @if (cartCount > 0) { <span class="badge">@cartCount</span> }
+            </a>
+        </div>
+    </div>
+</header>
+
+@if (TempData["Toast"] is string toast)
+{
+    <div class="toast" id="toast">
+        <span>@toast</span>
+        @if (TempData["ToastLink"] is string link) { <a href="@link">Sepeti gör →</a> }
+    </div>
+}
+
+<main>@RenderBody()</main>
+
+<footer class="foot">
+    <div class="wrap foot-grid">
+        <div>
+            <div class="logo logo-foot">LUNE</div>
+            <p class="muted-light">Zamansız, kaliteli ve sürdürülebilir giyim. Her gün için tasarlandı.</p>
+        </div>
+        <div>
+            <h4>Alışveriş</h4>
+            <a asp-controller="Shop" asp-action="Index" asp-route-category="Kadın">Kadın</a>
+            <a asp-controller="Shop" asp-action="Index" asp-route-category="Erkek">Erkek</a>
+            <a asp-controller="Shop" asp-action="Index" asp-route-category="Aksesuar">Aksesuar</a>
+            <a asp-controller="Shop" asp-action="Index" asp-route-sale="true">İndirim</a>
+        </div>
+        <div>
+            <h4>Yardım</h4>
+            <a asp-controller="Orders" asp-action="Index">Siparişlerim</a>
+            <a asp-controller="Notifications" asp-action="Index">Bildirimler</a>
+            <span>Teslimat &amp; iade</span>
+            <span>Beden tablosu</span>
+        </div>
+        <div>
+            <h4>Güvenli alışveriş</h4>
+            <span>256-bit güvenli ödeme</span>
+            <span>Visa · Mastercard · Troy</span>
+            <span class="muted-light small">Bu site bir öğrenme projesidir; ödemeler simüle edilir, gerçek para çekilmez.</span>
+        </div>
+    </div>
+    <div class="wrap foot-bottom">© 2026 LUNE · .NET 9 · MongoDB · RabbitMQ</div>
+</footer>
+
+@if (signedIn) { <script>window.__signedIn = true;</script> }
+<script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

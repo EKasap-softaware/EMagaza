@@ -1,0 +1,12 @@
+@model EMagaza.Domain.Entities.Order
+@{ ViewData["Title"] = "Sipariş alındı"; }
+<div class="done">
+    <div class="check">✓</div>
+    <h1>Siparişin alındı!</h1>
+    <p>Sipariş no <b>#@Model.Id</b> · @Model.CustomerName · @Model.Email</p>
+    <div class="panel" style="text-align:left">
+        @foreach (var i in Model.Items) { <div class="row"><span>@i.ProductName × @i.Quantity</span><span>@((i.UnitPrice * i.Quantity).ToString("N0")) ₺</span></div> }
+        <hr /><div class="row total"><span>Toplam</span><span>@Model.Total.ToString("N0") ₺</span></div>
+    </div>
+    <a class="btn big-btn" asp-controller="Shop" asp-action="Index">Alışverişe devam et</a>
+</div>

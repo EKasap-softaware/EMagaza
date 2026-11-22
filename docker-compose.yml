@@ -1,0 +1,63 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"                                             # http://localhost:8080
+    environment:
+      Mongo__ConnectionString: "mongodb://mongo:27017"          # çift alt çizgi = appsettings'teki ':' ; 'mongo' = aşağıdaki servis adı (Docker DNS)
+      RabbitMq__Host: "rabbitmq"
+      RabbitMq__Port: "5672"                                    # container İÇİ port (host'taki 5673 değil)
+      RabbitMq__ManagementPort: "15672"
+    depends_on:
+      - mongo
+      - rabbitmq
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    environment:
+      Mongo__ConnectionString: "mongodb://mongo:27017"
+      RabbitMq__Host: "rabbitmq"
+      RabbitMq__Port: "5672"
+    depends_on:
+      - mongo
+      - rabbitmq
+
+  mongo:
+    image: mongo:7
+    ports:
+      - "27018:27017"        # host 27018 (başka bir Mongo 27017'yi kullanıyor olabilir)
+    volumes:
+      - mongo-data:/data/db  # container silinse de veriler kaybolmaz
+
+  mongo-seed:                # tek seferlik: db/seed/products.json dosyasını veritabanına yükler (doluysa atlar)
+    image: mongo:7
+    depends_on:
+      - mongo
+    volumes:
+      - ./db/seed:/seed:ro
+    environment:
+      MONGO_HOST: "mongo"
+      MONGO_DB: "emagaza"
+    entrypoint: ["bash", "/seed/seed.sh"]
+    restart: "no"
+
+  mongo-express:             # MongoDB'nin tarayıcı arayüzü: verileri http://localhost:8081 adresinde gör
+    image: mongo-express:1
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_URL: "mongodb://mongo:27017/"
+      ME_CONFIG_BASICAUTH: "false"
+    depends_on:
+      - mongo
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5673:5672"          # AMQP (uygulama)
+      - "15673:15672"        # yönetim paneli: http://localhost:15673  (kullanıcı/şifre: guest/guest)
+
+volumes:
+  mongo-data:

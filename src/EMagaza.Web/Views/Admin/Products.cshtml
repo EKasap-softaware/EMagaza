@@ -1,0 +1,32 @@
+@model IReadOnlyList<Product>
+@{ ViewData["Title"] = "Ürün yönetimi"; }
+<div class="wrap">
+    <a class="back" asp-action="Index">← Panele dön</a>
+    <div class="page-head" style="padding-top:12px;display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap">
+        <h1>Ürün yönetimi <small class="muted" style="font-family:var(--sans);font-size:16px">(@Model.Count ürün)</small></h1>
+        <a class="btn btn-dark btn-sm" asp-action="ProductEdit">+ Yeni ürün</a>
+    </div>
+    <div class="tbl"><table>
+        <tr><th></th><th>Ürün</th><th>Kategori</th><th>Fiyat</th><th>Stok (beden)</th><th>Puan</th><th></th></tr>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td style="width:56px"><div class="cart-thumb" style="background:@Garments.Tint(p.ColorHex);width:48px">@Garments.Svg(p.Type, p.ColorHex)</div></td>
+                <td>@p.Name<br /><small class="muted">@p.Brand · @p.ColorName</small></td>
+                <td>@p.Category · @Garments.Label(p.Type)</td>
+                <td>@Fmt.Money(p.Price)@if (p.OnSale) { <br /><small class="muted"><s>@Fmt.Money(p.OldPrice)</s></small> }</td>
+                <td>@p.TotalStock<br /><small class="muted">@string.Join(" ", p.Sizes.Select(s => $"{s.Size}:{s.Stock}"))</small></td>
+                <td>@(p.ReviewCount == 0 ? "—" : $"{p.RatingAverage:0.0} ({p.ReviewCount})")</td>
+                <td>
+                    <div class="actions">
+                        <a class="btn btn-sm" asp-action="ProductEdit" asp-route-id="@p.Id">Düzenle</a>
+                        <form asp-action="ProductDelete" method="post" class="inline" onsubmit="return confirm('@p.Name silinsin mi?')">
+                            <input type="hidden" name="id" value="@p.Id" />
+                            <button class="btn btn-sm">Sil</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table></div>
+</div>

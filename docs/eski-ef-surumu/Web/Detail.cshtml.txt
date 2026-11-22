@@ -1,0 +1,55 @@
+@model EMagaza.Domain.Entities.Product
+@{ ViewData["Title"] = Model.Name; }
+<a class="back" asp-action="Index">← Ürünlere dön</a>
+<section class="detail">
+    <div class="big" style="background:linear-gradient(135deg,@Model.Color,#0f172a)"><span>@Model.Emoji</span></div>
+    <div>
+        <small class="muted">@Model.Category</small>
+        <h1>@Model.Name</h1>
+        <p class="lead">@Model.Description</p>
+        <div class="price">@Model.Price.ToString("N2") ₺</div>
+        <p class="@(Model.Stock > 0 ? "ok" : "bad")">@(Model.Stock > 0 ? $"Stokta {Model.Stock} adet var" : "Tükendi")</p>
+        @if (Model.Stock > 0)
+        {
+            <form asp-controller="Cart" asp-action="Add" method="post" class="buy">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <input type="number" name="quantity" value="1" min="1" max="@Model.Stock" />
+                <button class="btn big-btn">Sepete ekle</button>
+            </form>
+        }
+    </div>
+</section>
+
+@{
+    var reviews = ViewBag.Reviews as List<EMagaza.Domain.Entities.Review>;
+}
+<section class="reviews">
+    <h2>Yorumlar @if (reviews is { Count: > 0 }) { <small class="muted">· @reviews.Average(r => r.Rating).ToString("0.0") ★ (@reviews.Count)</small> }</h2>
+    <div class="cols">
+        <div>
+            @if (ViewBag.ReviewsError == true) { <div class="empty">Yorumlar şu an yüklenemiyor.</div> }
+            else if (reviews is null || reviews.Count == 0) { <div class="empty">Henüz yorum yok. İlk yorumu sen yaz!</div> }
+            else
+            {
+                foreach (var r in reviews)
+                {
+                    <div class="panel review">
+                        <div class="row"><b>@r.Author</b><span class="stars">@(new string('★', r.Rating))<span class="muted">@(new string('★', 5 - r.Rating))</span></span></div>
+                        <p>@r.Comment</p>
+                        <small class="muted">@r.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</small>
+                    </div>
+                }
+            }
+        </div>
+        <form class="panel form" asp-controller="Reviews" asp-action="Add" method="post">
+            <h3>Yorum yaz</h3>
+            <input type="hidden" name="productId" value="@Model.Id" />
+            <label>Adın<input name="author" required /></label>
+            <label>Puan
+                <select name="rating"><option value="5">5 ★★★★★</option><option value="4">4 ★★★★</option><option value="3">3 ★★★</option><option value="2">2 ★★</option><option value="1">1 ★</option></select>
+            </label>
+            <label>Yorum<textarea name="comment" rows="3" required></textarea></label>
+            <button class="btn big-btn">Gönder</button>
+        </form>
+    </div>
+</section>
