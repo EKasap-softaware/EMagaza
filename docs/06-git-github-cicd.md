@@ -1,6 +1,6 @@
 # 06 · Git / GitHub + CI
 
-> Durum: depo `git init` ile açıldı (`main`), henüz commit atılmadı. `.github/workflows/ci.yml` yazıldı ama **GitHub'a push edilmediği için henüz çalışmadı/doğrulanmadı**.
+> Durum: depo `main` dalında, ilk commit atıldı (`dedab1f`). Workflow dosyası hazır ve YAML olarak doğrulandı; **GitHub Actions üzerinde gerçek çalışması, depo GitHub'a push edilince başlar** (henüz push edilmedi).
 
 ## Git mantığı (3 alan)
 `çalışma klasörü` —`git add`→ `staging` —`git commit`→ `yerel depo` —`git push`→ `GitHub`
@@ -46,7 +46,7 @@ jobs:
   docker:
     needs: build-test                               # sıra: testler geçmeden imaj derlenmez
 ```
-**CI vs CD:** CI = derle+test. CD = (Continuous Delivery/Deployment) başarılıysa imajı kayıt defterine (ghcr.io) gönder ve sunucuya yayınla. Bizde CD adımı henüz yok; eklenecek.
+**CI vs CD:** CI = derle+test. CD = testler geçince imajı kayıt defterine (ghcr.io) gönderip yayına hazır hale getirmek. Bizde `publish-images` işi bunu yapar: sadece `main` dalına push + testler geçmişse çalışır, imajı hem commit kodu (`sha`) hem `latest` etiketiyle yollar. Sunucuya otomatik kurulum (deploy) ayrı bir adımdır, henüz yok.
 Sır yönetimi: şifre/anahtar YAML'a yazılmaz → GitHub *Settings → Secrets* ve `${{ secrets.ADI }}`.
 
 ## Mülakat soruları

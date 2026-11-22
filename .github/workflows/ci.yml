@@ -1,11 +1,17 @@
-name: CI
+name: CI/CD
 
 on:
   push:
     branches: [main]
   pull_request:
 
+# Aynı dalda yeni push gelirse eski çalışma iptal olur.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  # CI: derle + test. Her push ve pull request'te çalışır.
   build-test:
     runs-on: ubuntu-latest
     steps:
@@ -15,11 +21,42 @@ jobs:
           dotnet-version: 9.0.x
       - run: dotnet restore
       - run: dotnet build --no-restore -c Release
-      - run: dotnet test --no-build -c Release --verbosity normal
+      - run: dotnet test --no-build -c Release --logger "trx;LogFileName=test-results.trx"
+      - uses: actions/upload-artifact@v4
+        if: always()                        # test kırılsa da rapor yüklensin
+        with:
+          name: test-results
+          path: "**/test-results.trx"
 
-  docker:
-    needs: build-test          # testler geçmeden imaj derlenmez
+  # İmajlar derlenebiliyor mu? (PR'larda sadece derler, göndermez)
+  docker-build:
+    needs: build-test                       # testler geçmeden başlamaz
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: docker build -t emagaza:${{ github.sha }} .
+      - run: docker build -f Dockerfile -t emagaza-web:pr .
+      - run: docker build -f Dockerfile.worker -t emagaza-worker:pr .
+
+  # CD: sadece main'e giren, testleri geçen kod imaj olarak yayınlanır.
+  publish-images:
+    needs: build-test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write                       # ghcr.io'ya yazma izni (GITHUB_TOKEN ile, ayrı şifre gerekmez)
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: İmaj adı küçük harf olmalı
+        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
+      - run: |
+          docker build -f Dockerfile        -t $IMAGE-web:${{ github.sha }}    -t $IMAGE-web:latest .
+          docker build -f Dockerfile.worker -t $IMAGE-worker:${{ github.sha }} -t $IMAGE-worker:latest .
+          docker push --all-tags $IMAGE-web
+          docker push --all-tags $IMAGE-worker

@@ -1,5 +1,7 @@
 # 02 · EF Core (Entity Framework Core)
 
+> Not: Güncel proje MongoDB kullanır; EF Core ilişkisel veritabanları (SQL Server, SQLite) içindir ve çalışan koddan çıkarıldı. Eski EF'li sürüm `eski-ef-surumu/` klasöründe. Bu ders EF mantığını anlatır; Mongo karşılıkları için `07-mongodb.md` ve `09-proje-yapisi.md` tablosuna bak.
+
 EF Core = **ORM**: C# sınıfları ↔ veritabanı tabloları. SQL yazmadan LINQ ile sorgularsın, o SQL'e çevirir.
 
 ## Parçalar ve dosyalar
